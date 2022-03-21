@@ -6,6 +6,8 @@ let a;
 let li;
 let p;
 let div;
+// объект с группами
+let groups = {}
 
 function load_from_site() {
 	let xhr = new XMLHttpRequest();
@@ -17,6 +19,17 @@ function load_from_site() {
 		}
 		else{
 			students = JSON.parse(xhr.responseText)['response']
+			// формируем объект групп
+			for (let i = 0; i < students.length; i++){
+				if (students[i].group in groups) { //такая группа уже есть. добавим студента
+					groups[students[i].group].push(students[i])
+				}
+				else { //группы ещё нет. сперва добавим группу в объект, а потом уже добавим студента
+					groups[students[i].group] = []
+					groups[students[i].group].push(students[i])
+				}
+			}
+			console.log(groups)
 		}
 	};
 	xhr.onerror = function(){
